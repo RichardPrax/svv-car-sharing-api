@@ -1,15 +1,48 @@
+const express = require('express');
+const app = express();
 const mongoose = require('mongoose');
-const uri = "mongodb+srv://richardprax:<db_password>@carsharing.mlcav.mongodb.net/?retryWrites=true&w=majority&appName=carsharing";
-const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
-async function run() {
-  try {
-    // Create a Mongoose client with a MongoClientOptions object to set the Stable API version
-    await mongoose.connect(uri, clientOptions);
-    await mongoose.connection.db.admin().command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await mongoose.disconnect();
-  }
+const cors = require('cors');
+
+// Start the server
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
+// middleware setup
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
+app.use(express.static('./public'));
+app.use(cors());
+
+const mongodbURL = 'mongodb+srv://richardprax:qwertz123asdfg@carsharing.mlcav.mongodb.net/?retryWrites=true&w=majority&appName=carsharing';
+
+mongoose.connect(mongodbURL)
+    .then(result => console.log('*** Connentec ***'))
+    .catch(error => handleError(error.message));
+
+function handleError(error){
+    console.log(error);
 }
-run().catch(console.dir);
+
+
+const studentSchmea = new mongoose.Schema(
+    {
+        "id": {type:Number, required:true, unique:true},
+        "first_name": {type:String, required:true},
+        "last_name": {type:String, required:true}
+    }
+);
+
+const Student = mongoose.model('Students', studentSchmea);
+
+// API
+
+app.get('/', (req,res) => {
+    res.send('HI');
+})
+
+app.get('/students', async (req,res) => {
+    const result = await Student.find();
+    res.send(result);
+})

@@ -15,7 +15,7 @@ app.use(express.json());
 app.use(express.static('./public'));
 app.use(cors());
 
-const mongodbURL = 'mongodb+srv://richardprax:<db_password>@carsharing.mlcav.mongodb.net/?retryWrites=true&w=majority&appName=carsharing';
+const mongodbURL = 'mongodb+srv://richardprax:<qwertz123asdfg>@carsharing.mlcav.mongodb.net/?retryWrites=true&w=majority&appName=carsharing';
 
 mongoose.connect(mongodbURL)
     .then(result => console.log('*** Connentec ***'))

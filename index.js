@@ -46,3 +46,27 @@ app.get('/students', async (req,res) => {
     const result = await Student.find();
     res.send(result);
 })
+
+app.post('/students', async (req, res) => {
+    try {
+        const { id, first_name, last_name } = req.body;
+        
+        const student = new Student({
+            id,
+            first_name,
+            last_name
+        });
+
+        const savedStudent = await student.save();
+
+        res.status(201).json(savedStudent);
+    } catch (error) {
+        if (error.name === 'ValidationError') {
+            res.status(400).json({ message: 'Validation Error', errors: error.errors });
+        } else if (error.code === 11000) {
+            res.status(409).json({ message: 'Student ID already exists' });
+        } else {
+            res.status(500).json({ message: 'Internal Server Error' });
+        }
+    }
+});

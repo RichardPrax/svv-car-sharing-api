@@ -34,7 +34,7 @@ const studentSchmea = new mongoose.Schema(
     }
 );
 
-mongoose.model('Students', studentSchmea);
+const Student = mongoose.model('Students', studentSchmea);
 
 // API
 

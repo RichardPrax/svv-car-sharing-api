@@ -3,7 +3,6 @@ const router = express.Router();
 const Car = require('../models/Car');
 const auth = require('../middleware/auth');
 
-// Auto anbieten
 router.post('/', auth, async (req, res) => {
     const { numberOfSeats, driver, departureTime, departureFrom } = req.body;
     try {
@@ -21,7 +20,6 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
-// Alle Autos anzeigen
 router.get('/', auth, async (req, res) => {
     try {
         const cars = await Car.find().populate('owner', 'username email').populate('registeredUsers', 'username email');
@@ -31,7 +29,6 @@ router.get('/', auth, async (req, res) => {
     }
 });
 
-// Für ein Auto eintragen
 router.post('/:id/register', auth, async (req, res) => {
     try {
         const car = await Car.findById(req.params.id);
@@ -53,7 +50,6 @@ router.post('/:id/register', auth, async (req, res) => {
     }
 });
 
-// Von einem Auto abmelden
 router.post('/:id/deregister', auth, async (req, res) => {
     try {
         const car = await Car.findById(req.params.id);

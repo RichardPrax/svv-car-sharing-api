@@ -4,7 +4,6 @@ const User = require('../models/User');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-// Registrierung
 router.post('/register', async (req, res) => {
     const { username, email, password } = req.body;
     try {
@@ -16,8 +15,7 @@ router.post('/register', async (req, res) => {
     }
 });
 
-// Login
-router.post('/login', async (req, res) => {
+router.post('/authenticate', async (req, res) => {
     const { email, password } = req.body;
     try {
         const user = await User.findOne({ email });

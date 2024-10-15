@@ -32,9 +32,6 @@ mongoose.connect(mongodbURL, {
 app.use('/api/auth', authRoutes);
 app.use('/api/cars', carRoutes);
 
-router.get('/', auth, async (req, res) => {
-    res.json({ message:  "SVV-Car-Sharing REST Api!"});
-});
 
 app.use((err, req, res, next) => {
     console.error(err.stack);

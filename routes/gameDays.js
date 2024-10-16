@@ -4,7 +4,7 @@ const auth = require('../middleware/auth');
 
 router.get('/', auth, async (req, res) => {
     try {
-        const gameDays = await GameDay.find().populate('gameDays');
+        const gameDays = await GameDay.find().populate('cars');
         res.status(200).json({ message: 'Spieltage erfolgreich abgerufen', gameDays });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -13,7 +13,7 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
     try {
-        const gameDay = await GameDay.findById(req.params.id).populate('gameDays');
+        const gameDay = await GameDay.findById(req.params.id).populate('cars');
         if (!gameDay) {
             return res.status(404).json({ message: 'Spieltag nicht gefunden' });
         }

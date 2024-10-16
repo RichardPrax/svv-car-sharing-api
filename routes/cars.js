@@ -37,7 +37,7 @@ router.get('/', auth, async (req, res) => {
     try {
         const cars = await Car.find()
             .populate('owner', 'username')
-            .populate('registeredUsers', 'usernamel')
+            .populate('registeredUsers', 'username')
             .populate('gameDay', 'startTime location date');
         res.json(cars);
     } catch (err) {
@@ -47,12 +47,10 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
     try {
-        const car = await Car.findById(req.params.id);
-        if (!car) return res.status(404).json({ message: 'Auto nicht gefunden' });
-
-        car.populate('owner', 'username')
-        .populate('registeredUsers', 'usernamel')
+        const car = await Car.findById(req.params.id).populate('owner', 'username')
+        .populate('registeredUsers', 'username')
         .populate('gameDay', 'startTime location date');
+        if (!car) return res.status(404).json({ message: 'Auto nicht gefunden' });
 
         res.json(car);
     } catch (err) {

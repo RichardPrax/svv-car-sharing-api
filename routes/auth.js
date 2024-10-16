@@ -26,7 +26,7 @@ router.post('/authenticate', async (req, res) => {
 
         const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.json({ username: user.username, accessToken: jwtToken });
+        res.json({ username: user.username, id: user._id, accessToken: jwtToken });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

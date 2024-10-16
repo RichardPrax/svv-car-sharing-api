@@ -14,7 +14,7 @@ router.get('/', auth, async (req, res) => {
 
 router.get('/:id', auth, async (req, res) => {
     try {
-        const gameDay = await GameDay.findById(req.params.id).populate('cars');
+        const gameDay = await GameDay.findById(req.params.id).populate('cars registeredUsers');
         if (!gameDay) {
             return res.status(404).json({ message: 'Spieltag nicht gefunden' });
         }

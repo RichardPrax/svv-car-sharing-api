@@ -6,7 +6,7 @@ const GameDay = require('../models/GameDay');
 router.get('/', auth, async (req, res) => {
     try {
         const gameDays = await GameDay.find().populate('cars');
-        res.status(200).json({ message: 'Spieltage erfolgreich abgerufen', gameDays });
+        res.status(200).json({ gameDays });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -18,7 +18,7 @@ router.get('/:id', auth, async (req, res) => {
         if (!gameDay) {
             return res.status(404).json({ message: 'Spieltag nicht gefunden' });
         }
-        res.status(200).json({ message: 'Spieltag erfolgreich abgerufen', gameDay });
+        res.status(200).json({ gameDay });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -30,7 +30,7 @@ router.post('/create', auth, async (req, res) => {
     try {
         const newGameDay = new GameDay({ startTime, location, date, cars: [] });
         await newGameDay.save();
-        res.status(201).json({ message: 'Spieltag erfolgreich erstellt', gameDay: newGameDay });
+        res.status(201).json({ newGameDay });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }
@@ -51,7 +51,7 @@ router.put('/:id', auth, async (req, res) => {
         gameDay.date = date || gameDay.date;
         
         await gameDay.save();
-        res.json({ message: 'Spieltag erfolgreich aktualisiert', gameDay });
+        res.json({ gameDay });
     } catch (err) {
         res.status(400).json({ message: err.message });
     }

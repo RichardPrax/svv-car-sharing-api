@@ -58,6 +58,24 @@ router.get('/:id', auth, async (req, res) => {
     }
 });
 
+router.get('/gameday/:gameDayId', auth, async (req, res) => {
+    try {
+        const cars = await Car.find({ gameDay: req.params.gameDayId })
+            .populate('owner', 'username')
+            .populate('registeredUsers', 'username')
+            .populate('gameDay', 'startTime location date');
+        
+        if (!cars || cars.length === 0) {
+            return res.status(404).json({ message: 'Keine Autos für diesen Spieltag gefunden' });
+        }
+
+        res.json(cars);
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
+
 router.post('/:id/register', auth, async (req, res) => {
     try {
         const car = await Car.findById(req.params.id);

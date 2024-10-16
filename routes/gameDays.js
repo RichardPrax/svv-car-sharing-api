@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const auth = require('../middleware/auth');
+const GameDay = require('../models/GameDay');
 
 router.get('/', auth, async (req, res) => {
     try {

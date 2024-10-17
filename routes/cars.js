@@ -72,7 +72,7 @@ router.delete('/:id', auth, async (req, res) => {
             return res.status(403).json({ message: 'Nicht autorisiert, dieses Auto zu löschen' });
         }
 
-        await car.remove();
+        await car.deleteOne();
 
         const gameDay = await GameDay.findById(car.gameDay);
         if (gameDay) {
@@ -85,6 +85,7 @@ router.delete('/:id', auth, async (req, res) => {
         res.status(500).json({ message: err.message });
     }
 });
+
 
 
 router.get('/', auth, async (req, res) => {

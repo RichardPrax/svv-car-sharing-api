@@ -60,6 +60,32 @@ router.put('/:id', auth, async (req, res) => {
     }
 });
 
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const car = await Car.findById(req.params.id);
+
+        if (!car) {
+            return res.status(404).json({ message: 'Auto nicht gefunden' });
+        }
+
+        if (car.owner.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Nicht autorisiert, dieses Auto zu löschen' });
+        }
+
+        await car.remove();
+
+        const gameDay = await GameDay.findById(car.gameDay);
+        if (gameDay) {
+            gameDay.cars = gameDay.cars.filter(carId => carId.toString() !== req.params.id);
+            await gameDay.save();
+        }
+
+        res.status(200).json({ message: 'Auto erfolgreich gelöscht' });
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+});
+
 
 router.get('/', auth, async (req, res) => {
     try {

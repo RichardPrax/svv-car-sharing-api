@@ -35,7 +35,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 router.put('/:id', auth, async (req, res) => {
-    const { numberOfSeats, driver, departureTime, departureFrom } = req.body;
+    const { numberOfSeats, driver, departureTime, departureFrom, info } = req.body;
 
     try {
         const car = await Car.findById(req.params.id);
@@ -52,6 +52,7 @@ router.put('/:id', auth, async (req, res) => {
         if (driver) car.driver = driver;
         if (departureTime) car.departureTime = departureTime;
         if (departureFrom) car.departureFrom = departureFrom;
+        if (info) car.info = info;
 
         await car.save();
 

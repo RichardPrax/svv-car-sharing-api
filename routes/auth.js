@@ -5,9 +5,9 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 router.post('/register', async (req, res) => {
-    const { username, email, password } = req.body;
+    const { username, password } = req.body;
     try {
-        const user = new User({ username, email, password });
+        const user = new User({ username, password });
         await user.save();
         res.status(201).json({ message: 'User registered successfully' });
     } catch (err) {

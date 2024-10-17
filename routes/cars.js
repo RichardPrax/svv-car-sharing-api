@@ -33,6 +33,34 @@ router.post('/', auth, async (req, res) => {
     }
 });
 
+router.put('/:id', auth, async (req, res) => {
+    const { numberOfSeats, driver, departureTime, departureFrom } = req.body;
+
+    try {
+        const car = await Car.findById(req.params.id);
+
+        if (!car) {
+            return res.status(404).json({ message: 'Auto nicht gefunden' });
+        }
+
+        if (car.owner.toString() !== req.user._id.toString()) {
+            return res.status(403).json({ message: 'Nicht autorisiert, dieses Auto zu bearbeiten' });
+        }
+
+        if (numberOfSeats) car.numberOfSeats = numberOfSeats;
+        if (driver) car.driver = driver;
+        if (departureTime) car.departureTime = departureTime;
+        if (departureFrom) car.departureFrom = departureFrom;
+
+        await car.save();
+
+        res.status(200).json(car);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+
 router.get('/', auth, async (req, res) => {
     try {
         const cars = await Car.find()

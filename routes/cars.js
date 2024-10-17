@@ -5,7 +5,7 @@ const GameDay = require('../models/GameDay');
 const auth = require('../middleware/auth');
 
 router.post('/', auth, async (req, res) => {
-    const { numberOfSeats, driver, departureTime, departureFrom, gameDay } = req.body;
+    const { numberOfSeats, driver, departureTime, departureFrom, gameDay, info } = req.body;
     try {
         const gameDayDoc = await GameDay.findById(gameDay);
         if (!gameDayDoc) {
@@ -19,7 +19,8 @@ router.post('/', auth, async (req, res) => {
             departureTime,
             departureFrom,
             gameDay,
-            registeredUsers: []
+            registeredUsers: [],
+            info: info
         });
 
         await car.save();

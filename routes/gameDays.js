@@ -26,9 +26,9 @@ router.get('/:id', auth, async (req, res) => {
 
 
 router.post('/create', auth, async (req, res) => {
-    const { startTime, location, date } = req.body;
+    const { startTime, city, detailledAddress, date } = req.body;
     try {
-        const newGameDay = new GameDay({ startTime, location, date, cars: [] });
+        const newGameDay = new GameDay({ startTime, city, detailledAddress, date, cars: [] });
         await newGameDay.save();
         res.status(201).json({ newGameDay });
     } catch (err) {
@@ -38,7 +38,7 @@ router.post('/create', auth, async (req, res) => {
 
 router.put('/:id', auth, async (req, res) => {
     const { id } = req.params;
-    const { startTime, location, date } = req.body;
+    const { startTime, city, detailledAddress, date } = req.body;
     
     try {
         const gameDay = await GameDay.findById(id);
@@ -47,7 +47,8 @@ router.put('/:id', auth, async (req, res) => {
         }
 
         gameDay.startTime = startTime || gameDay.startTime;
-        gameDay.location = location || gameDay.location;
+        gameDay.city = city || gameDay.city;
+        gameDay.detailledAddress = detailledAddress || gameDay.detailledAddress;
         gameDay.date = date || gameDay.date;
         
         await gameDay.save();

@@ -19,7 +19,7 @@ router.post("/authenticate", async (req, res) => {
   const { username } = req.body;
   try {
     const user = await User.findOne({ username });
-    if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    if (!user) return res.status(404).json({ message: "User not found!" });
 
     // NOTE: removed password, because no body wants to enter it
     // const isMatch = await user.comparePassword(password);
